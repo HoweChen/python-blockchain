@@ -2,12 +2,14 @@ from attr import attrs, attrib
 import time
 
 from Block.block import Block
+from Consensus.pow import POW
 
 
 @attrs()
 class Blockchain:
     blocks = attrib(init=False, default=[Block(num=0, prev_hash=0)])
     num = attrib(init=False, default=0)
+    consensus = attrib(factory=POW)
 
     @blocks.validator
     def chain_checker(self, attribute, value):

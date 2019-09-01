@@ -1,7 +1,6 @@
 from attr import attrs, attrib
 import datetime
 from Block.body import Body
-from Consensus.pow import POW
 import hashlib
 
 
@@ -14,7 +13,6 @@ class Block:
     hash = attrib(init=False)
     timestamp = attrib(init=False, factory=datetime.datetime.now)
     body = attrib(factory=Body)
-    consensus = attrib(factory=POW)
     magic_no = attrib(default=0xD9B4BEF9)  # https://en.bitcoin.it/wiki/Block
 
     def __attrs_post_init__(self):
