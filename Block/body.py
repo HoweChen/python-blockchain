@@ -10,4 +10,4 @@ class Body:
 
     @txs.default
     def __txs_default(self):
-        return [randint(0, 100000000)]
+        return [randint(0, 100000000) for _ in range(100)]
