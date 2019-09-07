@@ -22,15 +22,29 @@ class Blockchain:
 
     def add_block(self):
         self.num += 1
-        new_block = Block()
-        print(id(new_block))
-        print(new_block.head.timestamp)
-        print(new_block.body.txs)
+        new_block = Block.with_param(PREVIOUS_HASH=self.blocks[-1].header)
+        print_block(new_block)
         self.blocks.append(new_block)
-        print("---------------------")
         # if self.consensus.check(
         #         ("{:%B %d, %Y}".format(new_block.head.timestamp) + str(new_block.body.txs)).encode()) is True:
         #     self.blocks.append(new_block)
+
+
+def print_block(new_block):
+    print(f'Block ID: {id(new_block)}')
+    print(f'Block header: ')
+    print(f'\tPrevious block hash: {new_block.header.prev_block_hash}')
+    print(f'\tNonce: {new_block.header.nonce}')
+    print(f'\tDifficulty: {new_block.header.bits}')
+    print(f'\tTimestamp: {new_block.header.timestamp}')
+
+    print(f'Block body: ')
+    print(f'\tBlock TXs: {new_block.body.txs}')
+    print(f'Block size(bytes): {new_block.block_size}')
+
+    print(f'Block transaction counter: {new_block.transaction_counter}')
+    print(f'Block size(bytes): {new_block.block_size}')
+    print("---------------------")
 
 
 if __name__ == '__main__':
