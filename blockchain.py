@@ -5,6 +5,8 @@ from Block.block import Block
 from Consensus.pow import POW
 from random import randint
 
+import fire
+
 
 @attrs()
 class Blockchain:
@@ -63,11 +65,15 @@ def print_block(new_block):
     print("---------------------")
 
 
-if __name__ == '__main__':
+def run_sample(block_num=10):
     cyh_chain = Blockchain()
     print_block(cyh_chain.blocks[0])
-    for i in range(10):
+    for i in range(block_num):
         # time.sleep(1)
         data = list(map(str, [randint(0, 100000000) for _ in range(randint(0, 100))]))
         cyh_chain.add_block(data)
     # print(cyh_chain)
+
+
+if __name__ == '__main__':
+    fire.Fire(run_sample)
