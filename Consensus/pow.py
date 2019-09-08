@@ -1,6 +1,9 @@
 from attr import attrs, attrib
 import hashlib
 
+# TODO: 支持两次hash
+# TODO：支持 Big Endian to Little Endian 的转换
+# https://livc.io/blog/209
 
 @attrs()
 class POW:
