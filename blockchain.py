@@ -3,28 +3,43 @@ import time
 
 from Block.block import Block
 from Consensus.pow import POW
+from random import randint
 
 
 @attrs()
 class Blockchain:
-    consensus = attrib(factory=POW)
+    consensus_module = attrib(factory=POW)
     blocks = attrib(init=False)
     num = attrib(init=False, default=0)
+    version = attrib(default="1.0", converter=str)
 
     @blocks.default
     def __blocks_default(self):
-        return [Block()]
+        # initialize the genesis block
+        return [Block(block_hash=0)]
 
     @blocks.validator
     def __chain_checker(self, attribute, value):
         if not value:
             raise ValueError("the blocks are None")
 
-    def add_block(self):
+    def add_block(self, data):
         self.num += 1
-        new_block = Block.with_param(PREVIOUS_HASH=self.blocks[-1].header)
-        print_block(new_block)
-        self.blocks.append(new_block)
+        is_appendable, hash_result, nonce, target = self.consensus_module.mine(data=data)
+        try:
+
+            if is_appendable and self.consensus_module.check(DATA=data, NONCE=nonce):
+                new_block = Block.with_param(
+                    BLOCK_HASH=hash_result,
+                    PREVIOUS_HASH=self.blocks[-1].block_hash,
+                    BODY=data,
+                    TARGET=target,
+                    NONCE=nonce,
+                    VERSION=self.version)
+                print_block(new_block)
+                self.blocks.append(new_block)
+        except Exception as e:
+            print(e)
         # if self.consensus.check(
         #         ("{:%B %d, %Y}".format(new_block.head.timestamp) + str(new_block.body.txs)).encode()) is True:
         #     self.blocks.append(new_block)
@@ -32,6 +47,7 @@ class Blockchain:
 
 def print_block(new_block):
     print(f'Block ID: {id(new_block)}')
+    print(f'Block hash: {new_block.block_hash}')
     print(f'Block header: ')
     print(f'\tPrevious block hash: {new_block.header.prev_block_hash}')
     print(f'\tNonce: {new_block.header.nonce}')
@@ -49,7 +65,9 @@ def print_block(new_block):
 
 if __name__ == '__main__':
     cyh_chain = Blockchain()
+    print_block(cyh_chain.blocks[0])
     for i in range(10):
-        cyh_chain.add_block()
-        time.sleep(1)
+        # time.sleep(1)
+        data = list(map(str, [randint(0, 100000000) for _ in range(randint(0, 100))]))
+        cyh_chain.add_block(data)
     # print(cyh_chain)
