@@ -27,7 +27,8 @@ class Blockchain:
 
     def add_block(self, data):
         self.num += 1
-        is_appendable, hash_result, nonce, target = self.consensus_module.mine(data=data)
+        is_appendable, hash_result, nonce, target = self.consensus_module.mine(
+            data=data)
         try:
 
             if is_appendable and self.consensus_module.check(DATA=data, NONCE=nonce):
@@ -70,7 +71,8 @@ def run_sample(block_num=10):
     print_block(cyh_chain.blocks[0])
     for i in range(block_num):
         # time.sleep(1)
-        data = list(map(str, [randint(0, 100000000) for _ in range(randint(0, 100))]))
+        data = list(map(str, [randint(0, 100000000)
+                              for _ in range(randint(0, 100))]))
         cyh_chain.add_block(data)
     # print(cyh_chain)
 
