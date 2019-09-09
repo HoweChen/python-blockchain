@@ -1,5 +1,4 @@
 from attr import attrs, attrib
-import time
 
 from Block.block import Block
 from Consensus.pow import POW
