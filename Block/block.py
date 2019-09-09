@@ -19,7 +19,8 @@ class Block:
     body = attrib(factory=Body)
     transaction_counter = attrib(init=False)
     block_size = attrib(init=False)
-    magic_no = attrib(init=False, default=0xD9B4BEF9)  # https://en.bitcoin.it/wiki/Block
+    # https://en.bitcoin.it/wiki/Block
+    magic_no = attrib(init=False, default=0xD9B4BEF9)
 
     @classmethod
     def with_param(cls, **kwargs):
@@ -43,7 +44,8 @@ class Block:
             elif key == "BLOCK_HASH":
                 block_hash = value
         return cls(block_hash,
-                   Header(prev_block_hash=previous_hash, nonce=nonce, bits=target, version=version),
+                   Header(prev_block_hash=previous_hash,
+                          nonce=nonce, bits=target, version=version),
                    Body(txs=block_data))
 
     def __attrs_post_init__(self):
@@ -58,5 +60,6 @@ if __name__ == '__main__':
     # print(id(b))
     # print(a == b)
     # print(a.header.timestamp)
-    a = Block.with_param(BLOCK_HASH="123", PREVIOUS_HASH="123", BODY=["1", "2", "3"])
+    a = Block.with_param(
+        BLOCK_HASH="123", PREVIOUS_HASH="123", BODY=["1", "2", "3"])
     print(a)
